@@ -1,6 +1,8 @@
 # spotify-analytics
+Jack Rudy, Alexander Dao
+06/09/2026
 
-Documentation adapted from original Google Docs write up.
+Documentation adapted from original Google Docs write up. - AD
 
 **Spotify Day-of-Week Classifier**
 Project Outline & Team Guidelines:

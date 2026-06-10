@@ -1,0 +1,20 @@
+<html> <!-- User Form for Spotify Trends -->
+<head>
+    <title>Spotify Trends - User Form</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Connect to Spotify</h1>
+        <a href="/login" class="button">Login with Spotify</a>
+    </div>
+    <script>
+        const oauth_check = new URLSearchParams(window.location.search).get('oauth');
+        if(oauth_check === 'success' && oauth_check.get('code')) {
+            alert('Successfully connected to Spotify! Syncing data...');
+        } else if (oauth_check === 'error') {
+            alert('Failed to connect to Spotify. Please try again.');
+        }
+    </script>
+</body>
+</html>
