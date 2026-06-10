@@ -4,7 +4,7 @@ Jack Rudy, Alexander Dao<br>
 
 Documentation adapted from original Google Docs write up. - AD<br>
 
-**Spotify Day-of-Week Classifier**
+**Spotify Day-of-Week Classifier**<br>
 Project Outline & Team Guidelines:<br>
 Can we predict the day of the week from Spotify listening patterns alone?
 
@@ -12,7 +12,7 @@ Can we predict the day of the week from Spotify listening patterns alone?
 Can a machine learning classifier predict the day of the week (Mon–Sun) based solely on a person's Spotify listening behavior that day — including the audio features of songs played and how long they listened?<br>
 This is a 7-class classification problem with clean, measurable inputs and clear evaluation metrics. No mood surveys, no self-reported data — just behavioral signals from the API.<br>
 
-2. Why This Works as a Project<br>
+2. What and Why<br>
 End-to-end pipeline from API auth to trained model to deployed demo — every stage is portfolio-worthy
 Clean ML framing: defined inputs, defined outputs, standard evaluation (accuracy, F1, confusion matrix)<br>
 No mood data overhead, which eliminates the biggest logistical risk from similar projects<br>
