@@ -3,8 +3,8 @@ from spotipy.oauth2 import SpotifyOAuth
 import sqlite3
 from datetime import datetime
 
-# what we want to test first:
-# first: establish basic connection to spotify API
+# TEST CASES FOR API CONNECTION FOR PULLING RAW DATA
+# first test: establish basic connection to spotify API
 
 def test_spotify_connection():
     # spotipy will do the heavy lifting

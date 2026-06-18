@@ -3,3 +3,6 @@ spotify-analytics/spotify-analytics/.gitignore
 
 spotify-analytics/spotify-analytics/dependencies
 # ignore dependency venv
+
+spotify-analytics/spotify-analytics/spotify_apitest.py
+# ignore private data
