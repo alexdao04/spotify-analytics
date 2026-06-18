@@ -1,8 +1,9 @@
+spotify-analytics/spotify-analytics/.env
 spotify-analytics/spotify-analytics/.gitignore
 # ignore private data
 
 spotify-analytics/spotify-analytics/dependencies
 # ignore dependency venv
 
-spotify-analytics/spotify-analytics/spotify_apitest.py
-# ignore private data
+spotify-analytics/spotify-analytics/dependencies/spotify_apitest.py
+# test cases for making sure code works before we deploy it to github
