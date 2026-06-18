@@ -1,4 +1,5 @@
 spotify-analytics/spotify-analytics/.gitignore
 # ignore private data
-spotify-analytics/spotify-analytics/datacheck.py
-# ignore test file
+
+spotify-analytics/spotify-analytics/dependencies
+# ignore dependency venv

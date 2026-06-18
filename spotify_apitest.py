@@ -17,7 +17,6 @@ def test_spotify_connection():
     # we're testing the connection to the API to start
     if(sp.current_user_saved_tracks(True)):
         print("Connection to Spotify API successful!")
-        
     else:
         print("Failed to connect to Spotify API.")
         assert False
