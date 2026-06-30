@@ -13,11 +13,11 @@ Can a machine learning classifier predict the day of the week (Mon–Sun) based 
 This is a 7-class classification problem with clean, measurable inputs and clear evaluation metrics. No mood surveys, no self-reported data — just behavioral signals from the API.<br>
 
 2. What and Why<br>
-End-to-end pipeline from API auth to trained model to deployed demo — every stage is portfolio-worthy
+Our target: End-to-end pipeline from API auth to trained model to deployed demo.
 Clean ML framing: defined inputs, defined outputs, standard evaluation (accuracy, F1, confusion matrix)<br>
 No mood data overhead, which eliminates the biggest logistical risk from similar projects<br>
 Interesting finding either way: high accuracy means people have detectable weekly rhythms; low accuracy means listening is more random than assumed — both are reportable results<br>
-Shareable artifact: a Streamlit app or GitHub Pages write-up is easy to link on a resume or LinkedIn<br>
+<br>
 
 3. Data<br>
 What you're collecting:<br>
