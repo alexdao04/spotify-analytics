@@ -13,7 +13,6 @@
 **Audio features**: All features are track-level values from the Spotify audio features endpoint, aggregated to daily means. Standard deviation columns are included for valence and energy only — add others if modeling reveals they're useful.
 **Session definition**: A new session begins when the gap between two consecutive tracks exceeds 30 minutes. This threshold can be adjusted but must be consistent across all participants.
 
-
 **Stage 3: Compare models**
 - Compare different classifier models to see which fit our data best and have the strongest evidence for trends by individual feature as well as when aggregated in data visualization. 
     - we won’t think about this until later when we have our data

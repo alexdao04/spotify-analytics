@@ -4,18 +4,17 @@ from dotenv import load_dotenv, find_dotenv
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 
-# Load environment variables from .env if present.
 load_dotenv(find_dotenv())
 
 
-def build_client_credentials_spotify():
-    client_id = os.getenv('SPOTIFY_CLIENT_ID')
-    client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
+def build_client_credentials_spotify(): # this function initializes client creds to start api handshake
+    client_id = os.getenv('SPOTIFY_CLIENT_ID') # first token
+    client_secret = os.getenv('SPOTIFY_CLIENT_SECRET') # second token
 
     if not client_id or not client_secret:
         raise ValueError('SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be set for Spotify API integration tests.')
 
-    credentials_manager = SpotifyClientCredentials(
+    credentials_manager = SpotifyClientCredentials( # 
         client_id=client_id,
         client_secret=client_secret,
     )
@@ -49,7 +48,7 @@ class TestSpotifyApiIntegration(unittest.TestCase):
         except ValueError as exc:
             self.skipTest(str(exc))
 
-        result = sp.search(q='Beatles', type='artist', limit=1)
+        result = sp.search(q='Shoreline Mafia', type='artist', limit=10) # Perform a search for the artist "Beatles" with a limit of 10 results
         self.assertIsInstance(result, dict)
         self.assertIn('artists', result)
         self.assertIsInstance(result['artists'], dict)
@@ -66,7 +65,6 @@ class TestSpotifyApiIntegration(unittest.TestCase):
         self.assertIsInstance(user, dict)
         self.assertIn('id', user)
         self.assertTrue(user['id'])
-
 
 if __name__ == '__main__':
     unittest.main()
