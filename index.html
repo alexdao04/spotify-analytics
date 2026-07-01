@@ -1,20 +1,66 @@
-<html> <!-- User Form for Spotify Trends -->
+<html>
 <head>
     <title>Spotify Trends - User Form</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="global_styling.css">
 </head>
 <body>
     <div class="container">
-        <h1>Connect to Spotify</h1> <!-- this hyperlink should send the user to the spotify authorization page -->
-        <a href="https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=YOUR_REDIRECT_URI&scope=YOUR_SCOPES" class="button">Login with Spotify</a>
+        <h1>Connect to Spotify</h1>
+        <button id="login-button" class="button">Login with Spotify</button>
     </div>
+
     <script>
-        const oauth_check = new URLSearchParams(window.location.search).get('oauth');
-        if(oauth_check === 'success' && oauth_check.get('code')) {
-            alert('Successfully connected to Spotify! Syncing data...');
-        } else if (oauth_check === 'error') {
-            alert('Failed to connect to Spotify. Please try again.');
+        const clientID = "ed4ced58644e4aac97a839f495de2df9";
+        const redirectURI = "https://alexdao04.github.io/spotify-analytics/auth-success.html";
+        const scopes = [
+            "user-read-private",
+            "user-read-email",
+            "user-read-recently-played"
+        ].join(" ");
+
+        function base64UrlEncode(str) {
+            return btoa(String.fromCharCode.apply(null, new Uint8Array(str)))
+                .replace(/\+/g, "-")
+                .replace(/\//g, "_")
+                .replace(/=+$/, "");
         }
+
+        async function sha256(plain) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(plain);
+            return await window.crypto.subtle.digest("SHA-256", data);
+        }
+
+        async function generateCodeChallenge(verifier) {
+            const hashed = await sha256(verifier);
+            return base64UrlEncode(hashed);
+        }
+
+        function generateRandomString(length = 128) {
+            const array = new Uint8Array(length);
+            window.crypto.getRandomValues(array);
+            return Array.from(array, dec => ("0" + dec.toString(16)).slice(-2)).join("");
+        }
+
+        async function redirectToSpotify() {
+            const verifier = generateRandomString(64);
+            const challenge = await generateCodeChallenge(verifier);
+
+            localStorage.setItem("spotify_code_verifier", verifier);
+
+            const params = new URLSearchParams({
+                client_id: clientID,
+                response_type: "code",
+                redirect_uri: redirectURI,
+                scope: scopes,
+                code_challenge_method: "S256",
+                code_challenge: challenge,
+            });
+
+            window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
+        }
+
+        document.getElementById("login-button").addEventListener("click", redirectToSpotify);
     </script>
 </body>
 </html>

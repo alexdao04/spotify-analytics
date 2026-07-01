@@ -14,12 +14,12 @@ def build_client_credentials_spotify(): # this function initializes client creds
     if not client_id or not client_secret:
         raise ValueError('SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be set for Spotify API integration tests.')
 
-    credentials_manager = SpotifyClientCredentials( # 
+    credentials_manager = SpotifyClientCredentials( # creates a spotifyclientcredentials object using client id and secret (spotipy needs this to start the handshake)
         client_id=client_id,
         client_secret=client_secret,
     )
 
-    return spotipy.Spotify(client_credentials_manager=credentials_manager)
+    return spotipy.Spotify(client_credentials_manager=credentials_manager) # return authentication so we can actually test our connection to the api below
 
 
 def build_user_oauth_spotify():
@@ -39,7 +39,8 @@ def build_user_oauth_spotify():
 
     return spotipy.Spotify(auth_manager=auth_manager)
 
-
+# now what we want to do is print the results of the api call to see if we can actually connect to the api and get a response back. 
+# if we can, then we know that our credentials are valid and we can use them to make further requests to the api. if we can't, then we know that our credentials are invalid and we need to fix them before we can continue.
 class TestSpotifyApiIntegration(unittest.TestCase):
     def test_spotify_public_api_connection(self):
         """Verify Spotify API connectivity with client credentials and a live search request."""
@@ -53,6 +54,7 @@ class TestSpotifyApiIntegration(unittest.TestCase):
         self.assertIn('artists', result)
         self.assertIsInstance(result['artists'], dict)
         self.assertGreater(len(result['artists'].get('items', [])), 0)
+        print("Public API Test Result:\n", result)
 
     def test_spotify_user_profile_connection(self):
         """Verify Spotify OAuth integration by requesting the authenticated user profile."""

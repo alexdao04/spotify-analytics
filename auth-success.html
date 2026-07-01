@@ -1,10 +1,91 @@
 <html>
-    <head>
-        <title>Authentication Successful</title>
-    </head>
-    <body>
+<head>
+    <title>Authentication Successful</title>
+    <link rel="stylesheet" type="text/css" href="global_styling.css">
+</head>
+<body>
+    <div class="container">
         <h1>Authentication Successful</h1>
-        <p>You've successfully connected your account with the Spotify API.</p><br>
-        <p>Thanks for sharing your data! You can now close this window and return to the application.</p>
-    </body>
+        <p id="message">Completing login...</p>
+        <div id="profile" style="display:none;">
+            <h2>Welcome, <span id="user-name"></span>!</h2>
+            <p>Email: <span id="user-email"></span></p>
+            <p>Spotify ID: <span id="user-id"></span></p>
+            <a href="index.html" class="button">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        const clientID = "ed4ced58644e4aac97a839f495de2df9";
+        const redirectURI = "https://alexdao04.github.io/spotify-analytics/auth-success.html";
+
+        function getQueryParam(name) {
+            return new URLSearchParams(window.location.search).get(name);
+        }
+
+        async function fetchToken(code, verifier) {
+            const body = new URLSearchParams({
+                grant_type: "authorization_code",
+                code,
+                redirect_uri: redirectURI,
+                client_id: clientID,
+                code_verifier: verifier,
+            });
+
+            const response = await fetch("https://accounts.spotify.com/api/token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: body.toString(),
+            });
+
+            if (!response.ok) {
+                throw new Error("Token exchange failed: " + response.statusText);
+            }
+            return response.json();
+        }
+
+        async function fetchUserProfile(accessToken) {
+            const response = await fetch("https://api.spotify.com/v1/me", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error("Failed to fetch profile: " + response.statusText);
+            }
+            return response.json();
+        }
+
+        (async () => {
+            try {
+                const code = getQueryParam("code");
+                if (!code) throw new Error("Missing code in callback URL");
+
+                const verifier = localStorage.getItem("spotify_code_verifier");
+                if (!verifier) throw new Error("No PKCE verifier found");
+
+                const tokenData = await fetchToken(code, verifier);
+                const profile = await fetchUserProfile(tokenData.access_token);
+
+                // Store access token for future API calls
+                localStorage.setItem("spotify_access_token", tokenData.access_token);
+                localStorage.setItem("spotify_user_id", profile.id);
+
+                // Display user profile
+                document.getElementById("message").style.display = "none";
+                document.getElementById("profile").style.display = "block";
+                document.getElementById("user-name").textContent = profile.display_name || profile.id;
+                document.getElementById("user-email").textContent = profile.email || "N/A";
+                document.getElementById("user-id").textContent = profile.id;
+
+                console.log("Spotify profile:", profile);
+            } catch (err) {
+                document.getElementById("message").textContent = "Error: " + err.message;
+                console.error(err);
+            }
+        })();
+    </script>
+</body>
 </html>
