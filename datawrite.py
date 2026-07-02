@@ -1,0 +1,2 @@
+# the purpose of this file is to write any data that we pulled from the spotify API to a local file for testing purposes.
+# later on we will explore writing to say google sheets since that's free and i dont have aws money
