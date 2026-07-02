@@ -5,9 +5,10 @@ July 1, 2026<br>
 
 General overview of the what and why behind this project.<br>
 For more information on how we're planning this project. see "progress.md".<br>
+Instructions for running this project will be included in "requirements.txt".<br>
 
 1. The What<br>
-Can a machine learning classifier predict songs listened to on a given day of the week, based solely on a person's Spotify listening behavior?<br>
+Can a classifier predict songs listened to on a given day of the week, based solely on a person's Spotify listening behavior?<br>
 
 2. Data<br>
 Target Data:<br>
@@ -32,7 +33,8 @@ Programmer / Data Engineer<br>
 Python: requests or spotipy library for API calls<br>
 OAuth 2.0: Authorization Code Flow (Spotify's standard flow for user data)<br>
 Storage: Probably Google Sheets for simplicity later on. This project doesn't have AWS money, man!<br>
-(will be retroactively updated as needed)<br>
+(this will be retroactively updated as needed)
+<br>
 Data Scientist / Analyst<br>
 pandas + numpy for cleaning and feature engineering<br>
 scikit-learn for model training (Random Forest, Logistic Regression, optionally XGBoost)<br>
@@ -44,7 +46,6 @@ Features to watch:<br>
 - Mean and STDev of features (e.g. valence, energy, tempo, danceability, acousticness, loudness)<br>
 - Total tracks played, total listen time in minutes, unique artist count<br>
 - Time-of-day distribution: proportion of listening in morning / afternoon / evening / night<br>
-
 Model selection:<br>
 - We could start with random forests — handles mixed feature types well.<br>
 - Other models for baseline comparison: 
@@ -52,22 +53,22 @@ Model selection:<br>
     - Majority-class dummy classifier<br>
     - XGNet<br>
     - Neural<br>
-
 Evaluation:<br>
 - Train/test split: 80/20, stratified by day of week to ensure class balance<br>
 - Primary metric: macro-averaged F1 score<br>
-
 Results:<br>
 - High accuracy means people have detectable weekly rhythms.<br>
 - Low accuracy means listening is more random than assumed — both are reportable results.<br>
 - If accuracy is low, that's not a failure — it means listening behavior doesn't strongly encode day-of-week patterns, which is itself a finding worth reporting.<br>
+
 5. Team Roles & Collaboration<br>
 Programmer / Data Engineer (Alexander Dao)<br>
 Responsibilities included:<br>
 - Spotify Developer app registration and OAuth flow<br>
 - API integration with Demo via GitHub Pages<br>
 - Automating the data collection pipeline<br>
-- Ensuring data is written to our initial collection file in proper format, so that the data scientist working on this doesn't want to kill me.<br>
+- Ensuring data is written to our initial collection file in proper format, so that the data scientist working on this doesn't want to kill me.
+<br>
 Data Scientist / Analyst (Jack Rudy)<br>
 Responsibilities included:<br>
 - Feature engineering from raw audio features<br>
@@ -78,3 +79,18 @@ Responsibilities included:<br>
 Shared Responsibilities:<br>
 - Periodic pair review/weekly project check-in<br>
 - Participant recruitment and consent<br>
+
+6. Environment Setup<br>
+Instructions for setting up the environment:<br>
+1. Create a virtual environment (optional but recommended):<br>
+    - "python -m venv venv"<br>
+2. Activate the virtual environment:<br>
+    - On Windows: venv\Scripts\activate<br>
+    - On macOS/Linux: source venv/bin/activate<br>
+3. Install the required packages:<br>
+    - pip install -r requirements.txt<br>
+4. Set up your Spotify API credentials in a .env file in the same directory as this requirements.txt file:<br>
+    - SPOTIPY_CLIENT_ID=your_client_id<br>
+    - SPOTIPY_CLIENT_SECRET=your_client_secret<br>
+5. Run it using the command:<br>
+    - python spotify_api.py<br>

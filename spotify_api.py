@@ -5,6 +5,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 from spotipy.cache_handler import CacheFileHandler
 
+
 load_dotenv(find_dotenv())
 
 
