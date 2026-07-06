@@ -1,13 +1,14 @@
-# local test for later
-
 import json
 import unittest
 from dotenv import load_dotenv, find_dotenv
 from spotify_api import CredentialsManager
 
+
+load_dotenv(find_dotenv())
+
+
 class TestWrite(unittest.TestCase):
     def test_write_recently_played_to_json(self):
-        load_dotenv(find_dotenv())
         try:
             sp = CredentialsManager.build_user_oauth_spotify()
         except ValueError as exc:
@@ -29,3 +30,6 @@ class TestWrite(unittest.TestCase):
             json.dump(recently_played, f, indent=4)
 
         print("Recently played tracks written to user-data.json")
+
+    if __name__ == '__main__':
+        unittest.TestCase(defaultTest='test_write_recently_played_to_json').run()
