@@ -1,66 +1,16 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Spotify Trends - User Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Day-of-Week Classifier</title>
     <link rel="stylesheet" type="text/css" href="global_styling.css">
 </head>
 <body>
     <div class="container">
-        <h1>Connect to Spotify</h1>
-        <button id="login-button" class="button" alignment="center">Login with Spotify</button>
+        <h1>Spotify Day-of-Week Classifier</h1>
+        <p>This research project is currently collecting Spotify listening data through a local Python tool.</p>
+        <p>Public participant login is not available yet. A hosted consent and data-collection flow is planned for a future release.</p>
     </div>
-
-    <script>
-        const clientID = "ed4ced58644e4aac97a839f495de2df9";
-        const redirectURI = "https://alexdao04.github.io/spotify-analytics/frontend/callback.html";
-        const scopes = [
-            "user-read-private",
-            "user-read-email",
-            "user-read-recently-played"
-        ].join(" ");
-
-        function base64UrlEncode(str) {
-            return btoa(String.fromCharCode.apply(null, new Uint8Array(str)))
-                .replace(/\+/g, "-")
-                .replace(/\//g, "_")
-                .replace(/=+$/, "");
-        }
-
-        async function sha256(plain) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(plain);
-            return await window.crypto.subtle.digest("SHA-256", data);
-        }
-
-        async function generateCodeChallenge(verifier) {
-            const hashed = await sha256(verifier);
-            return base64UrlEncode(hashed);
-        }
-
-        function generateRandomString(length = 128) {
-            const array = new Uint8Array(length);
-            window.crypto.getRandomValues(array);
-            return Array.from(array, dec => ("0" + dec.toString(16)).slice(-2)).join("");
-        }
-
-        async function redirectToSpotify() {
-            const verifier = generateRandomString(64);
-            const challenge = await generateCodeChallenge(verifier);
-
-            localStorage.setItem("spotify_code_verifier", verifier);
-
-            const params = new URLSearchParams({
-                client_id: clientID,
-                response_type: "code",
-                redirect_uri: redirectURI,
-                scope: scopes,
-                code_challenge_method: "S256",
-                code_challenge: challenge,
-            });
-
-            window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
-        }
-
-        document.getElementById("login-button").addEventListener("click", redirectToSpotify);
-    </script>
 </body>
 </html>

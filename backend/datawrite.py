@@ -36,7 +36,8 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=50, help="Tracks to fetch (1–50)")
     args = parser.parse_args()
 
-    token_cache = Path(".spotify_cache") / f"{args.user_id}.json"
+    token_cache = Path(".spotify_tokens") / f"{args.user_id}.json"
+    token_cache.parent.mkdir(parents=True, exist_ok=True)
     spotify = CredentialsManager.build_user_oauth_spotify(cache_path=token_cache)
     recently_played = CredentialsManager.get_recently_played(spotify, limit=args.limit)
     output_file = DataWriter.save_recently_played(args.user_id, recently_played)

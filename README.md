@@ -19,14 +19,15 @@ For the current roadmap, see [progress.md](progress.md). For installation requir
 
 ### Data collection
 
-- A local user authenticates through Spotify OAuth using credentials in `.env`.
+- A local user authenticates on Spotify's website through Spotipy, using credentials in `.env`.
+- Spotify redirects to Spotipy's temporary local callback server at `http://127.0.0.1:8888/callback`.
 - The collector retrieves up to 50 recently played tracks per run.
 - Each collection is written as a timestamped raw JSON file in `data/raw/user_XX/`.
 - Each user ID must use the anonymous format `user_01`, `user_02`, and so on.
 
 ### Consent and use
 
-Spotify's API Terms of Service permit personal, non-commercial use. Each participant should provide a short consent statement describing the data collected and its intended use. The GitHub Pages frontend will collect this consent before data submission.
+Spotify's API Terms of Service permit personal, non-commercial use. Each participant should provide a short consent statement describing the data collected and its intended use. The current local workflow does not collect consent automatically; record it separately before running the collector for a participant. A future hosted service will provide the consent and data-submission flow.
 
 ### Recommended sample size
 
@@ -76,7 +77,7 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
 ### Programmer / Data Engineer — Alexander Dao
 
 - Register and configure the Spotify Developer app and OAuth flow
-- Integrate the GitHub Pages demo with the Spotify API
+- Develop the future hosted participant consent and collection flow
 - Automate the data-collection pipeline
 - Write collected data in a usable format for analysis
 
@@ -87,11 +88,6 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
 - Train, evaluate, and iterate on models
 - Create visualizations and write up findings
 - Interpret what the models reveal about listening behavior
-
-### Shared responsibilities
-
-- Hold periodic pair reviews or weekly check-ins
-- Recruit participants and collect consent
 
 ## Environment Setup
 
@@ -117,7 +113,7 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
    pip install -r requirements.txt
    ```
 
-4. Copy `.env.example` to `.env`, then add your Spotify credentials:
+4. Copy `.env.example` to your own `.env` file (this is for API authentication purposes), then add your Spotify credentials:
 
    ```dotenv
    SPOTIPY_CLIENT_ID=your_client_id
@@ -125,32 +121,31 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
    SPOTIPY_REDIRECT_URI=http://127.0.0.1:8888/callback
    ```
 
-5. Run the JSON-writing test to authenticate with Spotify, retrieve up to 50 recently played tracks, and verify that the saved JSON can be read back:
+5. The Spotify integration tests are meant to confirm that everything's set up correctly.
+   They are to be used after configuring your credentials and redirect URI:
+
+   ```bash
+   RUN_SPOTIFY_INTEGRATION=1 python3 test_spotify_api.py
+   ```
+
+6. Run the JSON-writing test to authenticate with Spotify, retrieve up to 50 recently played tracks, and verify that the saved JSON can be read back:
 
    ```bash
    python3 test_datawrite.py
    ```
 
-   This creates a timestamped JSON file in `data/raw/user_01/`.
+   This creates a timestamped JSON file in `data/raw/<insert_user_here>/`.
 
-6. To collect data directly, provide an anonymous participant ID:
+7. Collect data for an anonymous participant:
 
    ```bash
-   python3 -m backend.datawrite --user-id user_01
+   python3 -m backend.datawrite --user-id <insert_user_here>
    ```
 
-   An OAuth token cache is created at `.spotify_cache/user_01.json`. Use a different `user_XX` ID for each participant.
-
-7. The Spotify integration tests are meant to confirm that everything's set up correctly. 
-   They are to be used after configuring your credentials and redirect URI:
-   ```bash
-   RUN_SPOTIFY_INTEGRATION=1 python3 test_spotify_api.py
-   ```
-
-8. When you're ready, integrate your account credentials once you've set up your own access tokens. Go to:
-   ```
-   [Integration](https://alexdao04.github.io/spotify-analytics/frontend/index.html)
-   ```
+   Spotipy opens Spotify's authorization website in your browser. After approval,
+   Spotify redirects to the local callback, and the collector saves a timestamped
+   response in `data/raw/<insert_user_here>/`. The participant's OAuth token is cached in
+   `.spotify_tokens/<insert_user_here>.json`.
 
 ## Current Workflow
 
@@ -166,14 +161,18 @@ DataWriter saves a timestamped raw JSON response
 data/raw/user_XX/<timestamp>-recently-played.json
 ```
 
-The current workflow is local and CLI-based. The frontend is a separate GitHub Pages OAuth prototype; it is not yet connected to the Python JSON collector.
+The current workflow is local and CLI-based. GitHub Pages cannot run the Python
+collector or write files to a researcher's computer. A future participant-facing
+version will require a hosted backend, a production OAuth callback, explicit
+consent, and private storage.
 
 ## Project Layout
 
 ```text
 backend/                 CredentialsManager and DataWriter classes
-frontend/                GitHub Pages OAuth prototype (not connected to backend)
+frontend/                Informational GitHub Pages site
 data/raw/user_XX/        Timestamped participant JSON output (not committed)
+.spotify_tokens/         Per-participant OAuth token caches (not committed)
 test_datawrite.py        Live fetch, save, and JSON-readback test
 test_spotify_api.py      Additional Spotify integration tests
 ```

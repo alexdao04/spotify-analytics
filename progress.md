@@ -6,15 +6,22 @@
 
 ## Stage 1: Collect User Data — In Progress
 
-- [x] Create a static website that integrates with the Spotify Web API.
-- [x] Build a Python Spotify OAuth demo.
+- [x] Create an informational static website for the project.
+- [x] Build the local Python Spotify OAuth flow.
 - [x] Retrieve a user's recently played tracks through the CLI.
 - [x] Save timestamped raw JSON responses in `data/raw/user_XX/`.
 - [x] Verify a saved JSON response can be read back in `test_datawrite.py`.
-- [ ] Connect the frontend OAuth flow to the Python data collector.
+- [ ] Build and deploy a participant-facing consent and data-collection service.
 - [ ] Decide on private shared storage for finalized participant data.
 
-The current collector is local and uses a separate OAuth token cache for each `user_XX` ID. Participant data and token caches are ignored by Git.
+The current collector is intentionally local. Spotipy opens Spotify's authorization
+website, receives the callback at `http://127.0.0.1:8888/callback`, and uses a
+separate token cache for each `user_XX` ID. Participant data and token caches are
+ignored by Git.
+
+The GitHub Pages site is informational only. It does not authenticate participants
+or communicate with the Python collector. A future hosted service will own the
+public OAuth callback, consent flow, and private data submission.
 
 ## Stage 2: Clean the Data — Jack's Focus
 
