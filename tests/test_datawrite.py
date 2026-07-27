@@ -1,5 +1,8 @@
 import json
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
 from dotenv import load_dotenv, find_dotenv
 
 from backend import CredentialsManager, DataWriter
@@ -26,14 +29,17 @@ class TestWrite(unittest.TestCase):
         # and whether theres any items in there (len > 0)
 
 
-        output_file = DataWriter.save_recently_played("user_01", recently_played)
-        self.assertTrue(output_file.exists())
-        try:
-            with output_file.open(encoding="utf-8") as file:
-                self.assertEqual(json.load(file), recently_played)
-            print(f"\n✓ Saved and verified recently played data: {output_file}")
-        except Exception as err:
-            self.fail(f"Failed to read or parse the saved JSON file: {err}")
+        with TemporaryDirectory() as temp_dir:
+            output_file = DataWriter.save_recently_played(
+                "user_01", recently_played, output_root=Path(temp_dir)
+            )
+            self.assertTrue(output_file.exists())
+            try:
+                with output_file.open(encoding="utf-8") as file:
+                    self.assertEqual(json.load(file), recently_played)
+                print("\n✓ Saved and verified recently played data in temporary storage")
+            except Exception as err:
+                self.fail(f"Failed to read or parse the saved JSON file: {err}")
 
 
 

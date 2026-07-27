@@ -117,16 +117,16 @@ Spotify's API Terms of Service permit personal, non-commercial use. Each partici
    They are to be used after configuring your credentials and redirect URI:
 
    ```bash
-   python3 test_spotify_api.py
+   python3 -m unittest tests.test_spotify_api -v
    ```
 
 6. Run the JSON-writing test to authenticate with Spotify, retrieve up to 50 recently played tracks, and verify that the saved JSON can be read back:
 
    ```bash
-   python3 test_datawrite.py
+   python3 -m unittest tests.test_datawrite -v
    ```
 
-   This creates a timestamped JSON file in `data/raw/<insert_user_here>/`.
+   The JSON-writing test uses temporary storage and does not create participant data.
 
 7. Collect data for an anonymous participant:
 
@@ -165,5 +165,5 @@ backend/                 CredentialsManager and DataWriter classes
 frontend/                Informational GitHub Pages site
 data/raw/user_XX/        Timestamped participant JSON output (not committed)
 .spotify_tokens/         Per-participant OAuth token caches (not committed)
-testing-suite/           API check + fetch/save/JSON write test
+tests/                   API integration and JSON-writing tests
 ```

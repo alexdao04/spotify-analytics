@@ -1,5 +1,4 @@
 import json
-import os
 import unittest
 
 from backend.spotify_api import CredentialsManager

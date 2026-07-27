@@ -10,7 +10,7 @@
 - [x] Build the local Python Spotify OAuth flow.
 - [x] Retrieve a user's recently played tracks through the CLI.
 - [x] Save timestamped raw JSON responses in `data/raw/user_XX/`.
-- [x] Verify a saved JSON response can be read back in `test_datawrite.py`.
+- [x] Verify a saved JSON response can be read back in `tests/test_datawrite.py`.
 - [ ] Build and deploy a participant-facing consent and data-collection service.
 - [ ] Decide on private shared storage for finalized participant data.
 
