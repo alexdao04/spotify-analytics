@@ -1,5 +1,6 @@
 .env
 .cache/
+dependencies/
 .spotify_cache
 .spotify_token_cache
 spotify_token_cache
