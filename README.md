@@ -6,7 +6,7 @@
 
 This project investigates whether a classifier can predict the day of the week on which a person listened to a song, using only their Spotify listening behavior.
 
-For the current roadmap, see [progress.md](progress.md). For installation requirements, see [requirements.txt](requirements.txt).
+For the current roadmap, see [progress.md](progress.md). For dependencies used, please see [requirements.txt](requirements.txt).
 
 ## Data
 
