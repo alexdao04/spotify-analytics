@@ -19,20 +19,20 @@ For the current roadmap, see [progress.md](progress.md). For installation requir
 
 ### Data collection
 
-- A local user authenticates on Spotify's website through Spotipy, using credentials in `.env`.
+- You authenticate on Spotify's website through Spotipy, using credentials in `.env`.
 - Spotify redirects to Spotipy's temporary local callback server at `http://127.0.0.1:8888/callback`.
-- The collector retrieves up to 50 recently played tracks per run.
+- The collector retrieves your most recently played tracks (in its current iteration).
 - Each collection is written as a timestamped raw JSON file in `data/raw/user_XX/`.
 - Each user ID must use the anonymous format `user_01`, `user_02`, and so on.
 
 ### Consent and use
 
-Spotify's API Terms of Service permit personal, non-commercial use. Each participant should provide a short consent statement describing the data collected and its intended use. The current local workflow does not collect consent automatically; record it separately before running the collector for a participant. A future hosted service will provide the consent and data-submission flow.
+Spotify's API Terms of Service permit personal, non-commercial use. Each participant will be provided a short consent statement describing the data collected and its intended use. The current local workflow does not collect consent automatically; record it separately before running the collector for a participant. A future hosted service will provide the consent and data-submission flow.
 
-### Recommended sample size
+### Sample size
 
-- Recruit 5–10 participants with substantial or regular listening histories.
-- More participants improve generalization; more weeks improve class balance across weekdays.
+- We plan to recruit 5–10 participants with substantial or regular listening histories.
+- The more participants we have, the more patterns we'll see.
 
 ## Tech Stack
 
@@ -47,7 +47,6 @@ Spotify's API Terms of Service permit personal, non-commercial use. Each partici
 - `pandas` and `numpy` for cleaning and feature engineering
 - `scikit-learn` for model training and evaluation
 - `matplotlib` and `seaborn` for visualizations, including confusion matrices and feature importance
-- Jupyter notebooks for exploratory analysis and model iteration
 
 ## Machine Learning Approach
 
@@ -64,13 +63,6 @@ Spotify's API Terms of Service permit personal, non-commercial use. Each partici
 - Majority-class dummy classifier baseline
 - XGBoost
 - Neural network
-
-### Evaluation
-
-- Use an 80/20 train/test split stratified by day of week.
-- Use macro-averaged F1 score as the primary metric.
-
-High accuracy would suggest detectable weekly listening rhythms. Low accuracy is also a useful result: it may show that listening behavior does not strongly encode day-of-week patterns.
 
 ## Team Roles
 
@@ -125,7 +117,7 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
    They are to be used after configuring your credentials and redirect URI:
 
    ```bash
-   RUN_SPOTIFY_INTEGRATION=1 python3 test_spotify_api.py
+   python3 test_spotify_api.py
    ```
 
 6. Run the JSON-writing test to authenticate with Spotify, retrieve up to 50 recently played tracks, and verify that the saved JSON can be read back:
