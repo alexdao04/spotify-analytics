@@ -98,7 +98,7 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
 1. Create a virtual environment (recommended):
 
    ```bash
-   python -m venv venv
+   python -m venv <env_name>
    ```
 
 2. Activate it:
