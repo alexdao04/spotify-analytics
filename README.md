@@ -165,6 +165,5 @@ backend/                 CredentialsManager and DataWriter classes
 frontend/                Informational GitHub Pages site
 data/raw/user_XX/        Timestamped participant JSON output (not committed)
 .spotify_tokens/         Per-participant OAuth token caches (not committed)
-test_datawrite.py        Live fetch, save, and JSON-readback test
-test_spotify_api.py      Additional Spotify integration tests
+testing-suite/           API check + fetch/save/JSON write test
 ```
