@@ -1,25 +1,46 @@
-Maintainer: Alexander Dao<br>
-Progress document for this project. Last updated July 1, 2026.<br>
+# Project Progress
 
-**Stage 1: aggregate our user data (mostly done)** (done)<br>
-Step 1: Create a static website that integrates with the Spotify Web API. This should give us the target data we need (done).<br>
-- This has been mostly done by now, now that we have a working API demo in python, we can attempt to create a flow that takes user data post-authentication and sends it straight to a private Google Sheets file (e.g. JSON).<br>
-- We're not going to have to worry about rate limiting or anything seeing as this is a very small-scale project.<br>
+**Maintainer:** Alexander Dao
 
-**Stage 2: Clean the data (this is Jack's domain):**<br>
-A few things to keep in mind:<br>
-**Missing days**:<br>
-- If a participant did not listen at all on a given day, omit that row entirely — do not insert a row of nulls.<br>
-**Minimum threshold**:<br>
-- Only include days where track_count >= 3. Days with fewer than 3 tracks are too sparse to be meaningful and should be dropped.<br>
-**Timestamps**:<br>
-- No raw timestamps in the final file. All time information has been converted to date, day_of_week, and the ratio columns above.<br>
-**Participant IDs**:<br>
-- Use user_01 through user_N. The mapping between real Spotify usernames and these IDs lives in a separate private file that never gets committed to GitHub.<br>
-**Audio features**:<br>
-- All features are track-level values from the Spotify audio features endpoint, aggregated to daily means. Standard deviation columns are included for valence and energy only — we may add others in the future if existing modeling reveals they're useful.<br>
-**Session definition**:<br>
-A new session begins when the gap between two consecutive tracks exceeds 30 minutes. This threshold can be adjusted but must be consistent across all participants.<br>
+**Last updated:** July 1, 2026
 
-**Stage 3: Compare models**
-- Compare different classifier models to see which fit our data best and have the strongest evidence for trends by individual feature as well as when aggregated in data visualization. 
+## Stage 1: Collect User Data — Mostly Complete
+
+- [x] Create a static website that integrates with the Spotify Web API.
+- [x] Build a working Python API demo.
+- [ ] Send authenticated user listening data to private storage, such as a Google Sheet or JSON collection file.
+
+This is a small-scale project, so rate limiting is not expected to be a major concern during early collection.
+
+## Stage 2: Clean the Data — Jack's Focus
+
+### Cleaning rules
+
+#### Missing days
+
+If a participant did not listen on a day, omit that day entirely. Do not create a row containing null values.
+
+#### Minimum threshold
+
+Only include days where `track_count >= 3`. Days with fewer than three tracks are too sparse to be meaningful.
+
+#### Timestamps
+
+Do not include raw timestamps in the final dataset. Convert time information into `date`, `day_of_week`, and the relevant time-of-day ratio columns.
+
+#### Participant IDs
+
+Use IDs in the form `user_01` through `user_N`. Keep the mapping to real Spotify usernames in a separate private file that is never committed to GitHub.
+
+#### Audio features
+
+Aggregate track-level audio features to daily means. Include standard deviation columns for valence and energy; add others later only if modeling shows they are useful.
+
+#### Session definition
+
+Start a new session when the gap between consecutive tracks exceeds 30 minutes. Use this threshold consistently for every participant.
+
+## Stage 3: Compare Models
+
+- [ ] Compare classifier models to find the best fit for the data.
+- [ ] Evaluate evidence for trends in individual features and in aggregated visualizations.
