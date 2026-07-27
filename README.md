@@ -147,6 +147,11 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
    RUN_SPOTIFY_INTEGRATION=1 python3 test_spotify_api.py
    ```
 
+8. When you're ready, integrate your account credentials once you've set up your own access tokens. Go to:
+   ```
+   [Integration:](https://alexdao04.github.io/spotify-analytics/frontend/index.html)
+   ```
+
 ## Current Workflow
 
 ```text
