@@ -15,7 +15,7 @@ For the current roadmap, see [progress.md](progress.md). For installation requir
 - Recently played tracks from the Spotify Web API
 - Track audio features: valence, energy, tempo, danceability, acousticness, loudness, instrumentalness, and speechiness
 - Daily listening aggregates: total listening time, track count, and unique artist count
-- A day-of-week label derived from each track timestamp (the target variable, `y`)
+- A day-of-week label derived from each track timestamp (so we know what songs people listen to on X day)
 
 ### Data collection
 
@@ -23,7 +23,6 @@ For the current roadmap, see [progress.md](progress.md). For installation requir
 - The collector retrieves up to 50 recently played tracks per run.
 - Each collection is written as a timestamped raw JSON file in `data/raw/user_XX/`.
 - Each user ID must use the anonymous format `user_01`, `user_02`, and so on.
-- The `data/` directory and OAuth token caches are ignored by Git.
 
 ### Consent and use
 
@@ -83,7 +82,7 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
 
 ### Data Scientist / Analyst — Jack Rudy
 
-- Engineer features from raw audio data
+- Determine features from raw audio data
 - Perform exploratory data analysis (EDA)
 - Train, evaluate, and iterate on models
 - Create visualizations and write up findings
@@ -142,8 +141,8 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
 
    An OAuth token cache is created at `.spotify_cache/user_01.json`. Use a different `user_XX` ID for each participant.
 
-7. Run the remaining Spotify integration tests only after configuring your credentials and redirect URI:
-
+7. The Spotify integration tests are meant to confirm that everything's set up correctly. 
+   They are to be used after configuring your credentials and redirect URI:
    ```bash
    RUN_SPOTIFY_INTEGRATION=1 python3 test_spotify_api.py
    ```
