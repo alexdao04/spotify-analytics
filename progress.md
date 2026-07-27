@@ -2,15 +2,19 @@
 
 **Maintainer:** Alexander Dao
 
-**Last updated:** July 1, 2026
+**Last updated:** July 26, 2026
 
-## Stage 1: Collect User Data — Mostly Complete
+## Stage 1: Collect User Data — In Progress
 
 - [x] Create a static website that integrates with the Spotify Web API.
-- [x] Build a working Python API demo.
-- [ ] Send authenticated user listening data to private storage, such as a Google Sheet or JSON collection file.
+- [x] Build a Python Spotify OAuth demo.
+- [x] Retrieve a user's recently played tracks through the CLI.
+- [x] Save timestamped raw JSON responses in `data/raw/user_XX/`.
+- [x] Verify a saved JSON response can be read back in `test_datawrite.py`.
+- [ ] Connect the frontend OAuth flow to the Python data collector.
+- [ ] Decide on private shared storage for finalized participant data.
 
-This is a small-scale project, so rate limiting is not expected to be a major concern during early collection.
+The current collector is local and uses a separate OAuth token cache for each `user_XX` ID. Participant data and token caches are ignored by Git.
 
 ## Stage 2: Clean the Data — Jack's Focus
 

@@ -66,7 +66,7 @@
                 const code_verifier = localStorage.getItem("spotify_code_verifier");
                 if (!code_verifier) throw new Error("No PKCE verifier found");
 
-                const tokenData = await fetchToken(code, verifier);
+                const tokenData = await fetchToken(code, code_verifier);
                 const profile = await fetchUserProfile(tokenData.access_token);
 
                 // Store access token for future API calls

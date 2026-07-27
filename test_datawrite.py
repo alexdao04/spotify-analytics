@@ -1,20 +1,21 @@
 import json
 import unittest
 from dotenv import load_dotenv, find_dotenv
-from spotify_api import CredentialsManager
+
+from backend import CredentialsManager, DataWriter
 
 
 load_dotenv(find_dotenv())
 
 
 class TestWrite(unittest.TestCase):
-    def test_write_recently_played_to_json(self):
+    def test_valid_json_response(self):
         try:
             sp = CredentialsManager.build_user_oauth_spotify()
         except ValueError as exc:
             self.skipTest(str(exc))
 
-        recently_played = CredentialsManager.get_recently_played(sp, limit=10)
+        recently_played = CredentialsManager.get_recently_played(sp, limit=50)
         # for the purposes of this test we just want the most recent tracks
         self.assertIsInstance(recently_played, dict)
         # make sure that our recently played is in a dictionary format
@@ -25,11 +26,17 @@ class TestWrite(unittest.TestCase):
         # and whether theres any items in there (len > 0)
 
 
-        # Write to JSON file
-        with open('user-data.json', 'w') as f:
-            json.dump(recently_played, f, indent=4)
+        output_file = DataWriter.save_recently_played("user_01", recently_played)
+        self.assertTrue(output_file.exists())
+        try:
+            with output_file.open(encoding="utf-8") as file:
+                self.assertEqual(json.load(file), recently_played)
+                json.dump(recently_played, file, indent=4)
+            print(f"\n✓ Saved and verified recently played data: {output_file}")
+        except Exception as err:
+            self.fail(f"Failed to read or parse the saved JSON file: {err}")
 
-        print("Recently played tracks written to user-data.json")
 
-    if __name__ == '__main__':
-        unittest.TestCase(defaultTest='test_write_recently_played_to_json').run()
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

@@ -19,9 +19,11 @@ For the current roadmap, see [progress.md](progress.md). For installation requir
 
 ### Data collection
 
-- Each participant authenticates through Spotify OAuth.
-- Listening data is aggregated after the OAuth handshake completes.
-- Data will be stored in a private-access Google Sheet.
+- A local user authenticates through Spotify OAuth using credentials in `.env`.
+- The collector retrieves up to 50 recently played tracks per run.
+- Each collection is written as a timestamped raw JSON file in `data/raw/user_XX/`.
+- Each user ID must use the anonymous format `user_01`, `user_02`, and so on.
+- The `data/` directory and OAuth token caches are ignored by Git.
 
 ### Consent and use
 
@@ -116,16 +118,58 @@ High accuracy would suggest detectable weekly listening rhythms. Low accuracy is
    pip install -r requirements.txt
    ```
 
-4. Create a `.env` file next to `requirements.txt`:
+4. Copy `.env.example` to `.env`, then add your Spotify credentials:
 
    ```dotenv
-   SPOTIFY_CLIENT_ID=your_client_id
-   SPOTIFY_CLIENT_SECRET=your_client_secret
-   SPOTIFY_REDIRECT_URI=your_redirect_uri
+   SPOTIPY_CLIENT_ID=your_client_id
+   SPOTIPY_CLIENT_SECRET=your_client_secret
+   SPOTIPY_REDIRECT_URI=http://127.0.0.1:8888/callback
    ```
 
-5. Run the API script:
+5. Run the JSON-writing test to authenticate with Spotify, retrieve up to 50 recently played tracks, and verify that the saved JSON can be read back:
 
    ```bash
-   python spotify_api.py
+   python3 test_datawrite.py
    ```
+
+   This creates a timestamped JSON file in `data/raw/user_01/`.
+
+6. To collect data directly, provide an anonymous participant ID:
+
+   ```bash
+   python3 -m backend.datawrite --user-id user_01
+   ```
+
+   An OAuth token cache is created at `.spotify_cache/user_01.json`. Use a different `user_XX` ID for each participant.
+
+7. Run the remaining Spotify integration tests only after configuring your credentials and redirect URI:
+
+   ```bash
+   RUN_SPOTIFY_INTEGRATION=1 python3 test_spotify_api.py
+   ```
+
+## Current Workflow
+
+```text
+.env credentials
+       ↓
+CredentialsManager creates a Spotify OAuth client
+       ↓
+Spotify returns recently played tracks
+       ↓
+DataWriter saves a timestamped raw JSON response
+       ↓
+data/raw/user_XX/<timestamp>-recently-played.json
+```
+
+The current workflow is local and CLI-based. The frontend is a separate GitHub Pages OAuth prototype; it is not yet connected to the Python JSON collector.
+
+## Project Layout
+
+```text
+backend/                 CredentialsManager and DataWriter classes
+frontend/                GitHub Pages OAuth prototype (not connected to backend)
+data/raw/user_XX/        Timestamped participant JSON output (not committed)
+test_datawrite.py        Live fetch, save, and JSON-readback test
+test_spotify_api.py      Additional Spotify integration tests
+```

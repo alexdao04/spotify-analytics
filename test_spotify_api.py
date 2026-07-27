@@ -1,15 +1,12 @@
+import json
 import os
 import unittest
-import json
-from dotenv import load_dotenv, find_dotenv
-from spotify_api import CredentialsManager
 
-
-load_dotenv(find_dotenv())
+from backend.spotify_api import CredentialsManager
 
 
 class TestSpotifyApiIntegration(unittest.TestCase):
-    def test_spotify_public_api_connection(self):
+    def test_public_search_returns_artist_results(self):
         try:
             sp = CredentialsManager.build_client_credentials_spotify()
         except ValueError as exc:
@@ -23,7 +20,7 @@ class TestSpotifyApiIntegration(unittest.TestCase):
         print("Public API Test Result:\n", result)
 
 
-    def test_spotify_user_profile_connection(self):
+    def test_authorized_user_profile_has_an_id(self):
         try:
             sp = CredentialsManager.build_user_oauth_spotify()
         except ValueError as exc:
@@ -35,13 +32,13 @@ class TestSpotifyApiIntegration(unittest.TestCase):
         self.assertTrue(user['id'])
     
 
-    def test_get_recently_played(self):
+    def test_recently_played_response_contains_tracks(self):
         try:
             sp = CredentialsManager.build_user_oauth_spotify()
         except ValueError as exc:
             self.skipTest(str(exc))
 
-        recently_played = CredentialsManager.get_recently_played(sp, limit=10)
+        recently_played = CredentialsManager.get_recently_played(sp, limit=50)
         self.assertIsInstance(recently_played, dict)
         self.assertIn('items', recently_played)
         self.assertGreater(len(recently_played['items']), 0)
@@ -53,14 +50,14 @@ class TestSpotifyApiIntegration(unittest.TestCase):
         print("\n")
 
 
-    def test_aggregate_listening_data(self):
+    def test_aggregation_extracts_track_fields(self):
         try:
             sp = CredentialsManager.build_user_oauth_spotify()
         except ValueError as exc:
             self.skipTest(str(exc))
 
-        recently_played = CredentialsManager.get_recently_played(sp, limit=10)
-        items = CredentialsManager.aggregate_listening_data(sp, recently_played)
+        recently_played = CredentialsManager.get_recently_played(sp, limit=50)
+        items = CredentialsManager.aggregate_listening_data(recently_played)
         
         self.assertIsInstance(items, list)
         self.assertGreater(len(items), 0)
@@ -70,4 +67,4 @@ class TestSpotifyApiIntegration(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
