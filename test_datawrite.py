@@ -31,7 +31,6 @@ class TestWrite(unittest.TestCase):
         try:
             with output_file.open(encoding="utf-8") as file:
                 self.assertEqual(json.load(file), recently_played)
-                json.dump(recently_played, file, indent=4)
             print(f"\n✓ Saved and verified recently played data: {output_file}")
         except Exception as err:
             self.fail(f"Failed to read or parse the saved JSON file: {err}")

@@ -1,5 +1,6 @@
 .env
-.cache/
+.cache
+.DS_Store/
 dependencies/
 .spotify_cache
 .spotify_token_cache
